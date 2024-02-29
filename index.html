@@ -10,15 +10,19 @@
     text-align: center;
     font-family: system-ui, sans-serif;
   }
+
   td {
     height: 3rem;
     width: 3rem;
     text-align: center;
   }
+
   table {
     margin: 5rem auto;
   }
+
   @media (prefers-color-scheme: dark) {
+
     body,
     input {
       background: #222;
@@ -27,7 +31,7 @@
   }
 </style>
 
-<h1>Tic Tac Toe</h1>
+<h1>Tic Tac Toe(Automated)</h1>
 
 <table>
   <tr>
@@ -47,7 +51,8 @@
   </tr>
 </table>
 
-<h2 hidden>Game over</h2>
+<h2 hidden>Game Over </h2>
+<h3 hidden> Winner is: <span id="winner"> </span></h3>
 
 <script>
   // Initialization
@@ -76,6 +81,8 @@
     )
   );
   const gameOver = document.querySelector("h2");
+  const winner = document.getElementById("winner")
+  const winnerContainer = document.querySelector("h3")
   const HUMAN = "🧑‍💻";
   const ROBOT = "🤖";
 
@@ -93,11 +100,11 @@
   function handleClickInput(evt) {
     evt.target.closest("td").innerHTML = HUMAN;
     if (hasWin()) {
-      return endGame();
+      return endGame(HUMAN);
     }
     runRobotTurn();
     if (hasWin()) {
-      return endGame();
+      return endGame(ROBOT);
     }
   }
 
@@ -130,12 +137,17 @@
   }
 
   // Display game over, cancel events
-  function endGame() {
+  function endGame(userWhoWon) {
     gameOver.hidden = false;
-    for (const input of inputs) {
-      input.removeEventListener("click", handleClickInput);
-      input.remove();
-    }
+    winnerContainer.hidden = false;
+    winner.innerText = userWhoWon
+    setTimeout(() => {
+
+      for (const input of inputs) {
+        input.removeEventListener("click", handleClickInput);
+        input.remove();
+      }
+    }, [5000])
   }
 
   // Shuffle a copy of the input array
